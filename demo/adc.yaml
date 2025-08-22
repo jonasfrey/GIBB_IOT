@@ -1,0 +1,30 @@
+sensor:
+  - platform: adc
+    pin: GPIO32
+    name: "Analog Sensor"
+    icon: "mdi:gauge"
+    update_interval: 60s
+    attenuation: 12db
+
+
+  - platform: adc
+    pin: GPIO33
+    name: "NTC"
+    icon: "mdi:gauge"
+    update_interval: 60s
+    attenuation: 12db
+
+
+  - platform: adc
+    pin: GPIO34
+    name: "LDR"
+    icon: "mdi:gauge"
+    update_interval: 60s
+    attenuation: 12db
+
+  - platform: adc
+    pin: GPIO35
+    name: "Voltage"
+    icon: "mdi:gauge"
+    update_interval: 60s
+    attenuation: 12db

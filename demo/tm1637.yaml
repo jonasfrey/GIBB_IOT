@@ -1,0 +1,12 @@
+
+display:
+  - platform: tm1637
+    id: tm1637_display
+    clk_pin: GPIO18
+    dio_pin: GPIO17
+    inverted: false
+    length: 4
+    lambda: |-
+      it.strftime("%H.%M",id(sntp_time).now());
+
+ #it.printf(0, "%.1f", id(temperatur).state);

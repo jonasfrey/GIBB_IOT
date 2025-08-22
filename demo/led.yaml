@@ -1,0 +1,24 @@
+#Hier werden die LED's angesteuert
+switch:
+  - platform: gpio
+    id: "LED1"
+    name: "LED1"
+    icon: "mdi:led-on"
+    pin: GPIO25
+  - platform: gpio
+    id: "LED2"
+    name: "LED2"
+    icon: "mdi:led-on"
+    pin: GPIO14
+  - platform: gpio
+    id: "LED3"
+    name: "LED3"
+    icon: "mdi:led-on"
+    pin: GPIO13
+  - platform: gpio
+    id: "LED4"
+    name: "LED4"
+    icon: "mdi:led-on"
+    pin: GPIO12
+  - platform: restart
+    name: "Restart"

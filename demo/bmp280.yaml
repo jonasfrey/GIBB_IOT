@@ -1,0 +1,11 @@
+sensor:
+#- platform: bme280
+  - platform: bmp280_i2c
+    temperature:
+      name: "Outside Temperature"
+      oversampling: 16x
+    pressure:
+      name: "Outside Pressure"
+    address: 0x76
+    #address: 0x77
+    update_interval: 60s

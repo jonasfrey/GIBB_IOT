@@ -1,0 +1,40 @@
+
+
+
+select:
+  - platform: template
+    name: LED
+    id: Ledselect    
+    options:     
+     - "1"     
+     - "2"   
+     - "3"   
+     - "4"      
+    initial_option: "1"
+    optimistic: true
+    set_action:         
+      - logger.log:        
+          format: "Chosen option: %s"
+          args: ["x.c_str()"] 
+      - lambda: |-
+          if (strcmp( x.c_str(), "1") == 0  ) {
+            id(LED1).turn_on();              
+            ESP_LOGD("lambda", "1");
+          }
+          else if (strcmp( x.c_str(), "2") == 0) {
+            id(LED2).turn_on();            
+            ESP_LOGD("lambda", "2"); 
+          }
+          else if (strcmp( x.c_str(), "3") == 0) {
+            id(LED3).turn_on();            
+            ESP_LOGD("lambda", "3");  
+          }
+          else
+          {
+            id(LED4).turn_on();            
+            ESP_LOGD("lambda", "3");
+          }
+          
+
+      
+ 

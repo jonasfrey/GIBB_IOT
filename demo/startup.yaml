@@ -1,0 +1,45 @@
+#start check the led
+sensor:
+  - platform: uptime
+    update_interval: 10s
+    id: up
+    name: Uptime Sensor
+    on_value_range:
+      - above: 20
+        then:
+      - above: 18
+        then:
+          - switch.turn_off: LED1
+          - switch.turn_off: LED2
+          - switch.turn_off: LED3
+          - switch.turn_off: LED4
+      - above: 15
+        then:
+          - switch.turn_off: LED1
+          - switch.turn_off: LED2
+          - switch.turn_off: LED3
+          - switch.turn_on: LED4
+      - above: 13
+        then:
+          - switch.turn_off: LED1
+          - switch.turn_off: LED2
+          - switch.turn_on: LED3
+          - switch.turn_off: LED4
+      - above: 10
+        then:
+          - switch.turn_off: LED1
+          - switch.turn_on: LED2
+          - switch.turn_off: LED3
+          - switch.turn_off: LED4
+      - above: 7
+        then:
+          - switch.turn_on: LED1
+          - switch.turn_off: LED2
+          - switch.turn_off: LED3
+          - switch.turn_off: LED4
+      - below: 5
+        then:
+          - switch.turn_off: LED1
+          - switch.turn_off: LED2
+          - switch.turn_off: LED3
+          - switch.turn_off: LED4
