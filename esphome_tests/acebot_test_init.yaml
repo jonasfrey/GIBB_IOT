@@ -1,0 +1,20 @@
+esphome:
+  name: acebot_max
+
+esp32:
+  board: esp32dev
+
+
+
+output:
+  - platform: gpio
+    pin: 3
+    id: led_builtin
+
+light:
+  - platform: binary
+    name: "Status LED"
+    output: led_builtin
+
+
+logger: 

@@ -1,0 +1,48 @@
+esphome:
+  name: ntc-display
+  friendly_name: NTC Display
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+logger:  # serial logs over USB
+
+# --- Sensors: ADC -> Resistance -> NTC (°C)
+sensor:
+  - platform: adc
+    pin: GPIO33          # A1 on your shield (change if different)
+    id: adc_ntc
+    update_interval: 1s
+
+  - platform: resistance
+    id: ntc_resistance
+    sensor: adc_ntc
+    configuration: DOWNSTREAM
+    resistor: 10kOhm     # fixed divider resistor on your board
+    reference_voltage: 3.3V
+
+  - platform: ntc
+    id: ntc_temp
+    sensor: ntc_resistance
+    name: "NTC Temperature"
+    calibration:
+      b_constant: 3950
+      reference_resistance: 10kOhm
+      reference_temperature: 25°C
+    filters:
+      - clamp:
+          min_value: -40
+          max_value: 125
+
+# --- TM1637 display
+display:
+  - platform: tm1637
+    id: tm1637_display
+    clk_pin: GPIO18       # D10 on your setup (edit if needed)
+    dio_pin: GPIO17       # D11 on your setup (edit if needed)
+    update_interval: 1s
+    lambda: |-
+      // show temperature with one decimal (e.g. 23.4)
+      it.printf(0, "%.1f", id(ntc_temp).state);
