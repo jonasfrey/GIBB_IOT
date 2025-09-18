@@ -1,0 +1,22 @@
+esphome:
+  name: my-esp32
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Connect to your Wi-Fi (DHCP)
+wifi:
+  ssid: "TP-Link_83FE"
+  password: "YOUR_WIFI_PASSWORD"
+
+  # Optional: fallback AP if home Wi-Fi isn't available
+  ap:
+    ssid: "my-esp32 Fallback"
+    password: "fallback_password"
+
+logger:
+api:
+ota:
+captive_portal:
