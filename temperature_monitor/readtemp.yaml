@@ -1,0 +1,125 @@
+substitutions:
+  name: jonas #My not be longer then 10 letters
+  ssid: !secret ssid
+  ssid_pass: !secret ssid_pass
+  webserver_user: !secret webserver_user
+  webserver_pass: !secret webserver_pass
+  fallback_pass: !secret fallback_pass
+  #static_ip: 10.130.1.21
+  #gateway: 10.130.1.1
+  #subnet: 255.255.255.0
+
+# Basic configuration for an ESP32 device
+esphome:
+  name: ${name}
+  friendly_name: ${name}
+
+# Hardware configuration
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+
+# Wi-Fi Configuration
+wifi:
+  ssid:  ${ssid}
+  password: ${ssid_pass}
+
+  ap:
+    ssid: ESPHome ${name}
+    password: ${fallback_pass}
+# Enable logging
+logger:
+
+# Enable over-the-air updates
+ota:
+  platform: esphome
+
+
+# I2C for sensors (if needed)
+i2c:
+  sda: 21
+  scl: 22
+  scan: true
+
+# DHT Sensor Configuration
+sensor:
+  - platform: dht
+    pin:
+      number: GPIO16
+    temperature:
+      name: "Room Temperature"
+      id: room_temperature
+      filters:
+        - offset: -2.0
+      on_value:
+        then:
+          - lambda: |-
+              float t = id(room_temperature).state;
+              
+              // Turn off all LEDs first
+              id(blue_led).turn_off();
+              id(green_led).turn_off();
+              id(yellow_led).turn_off();
+              id(red_led).turn_off();
+              
+              // Turn on appropriate LED based on temperature
+              if (t < 20.0) {
+                id(blue_led).turn_on();   // Blue - Cold
+              } else if (t < 23.0) {
+                id(green_led).turn_on();  // Green - Cool
+              } else if (t <= 25.0) {
+                id(yellow_led).turn_on(); // Yellow - Warm
+              } else {
+                id(red_led).turn_on();    // Red - Hot
+              }
+
+    update_interval: 1s
+# LED Output Configuration
+output:
+  - platform: gpio
+    pin: GPIO25
+    id: blue_led_output
+  - platform: gpio
+    pin: GPIO14
+    id: green_led_output
+  - platform: gpio
+    pin: GPIO13
+    id: yellow_led_output
+  - platform: gpio
+    pin: GPIO12
+    id: red_led_output
+
+
+
+
+# LED Light Configuration
+light:
+  - platform: binary
+    name: "Blue LED"
+    id: blue_led
+    output: blue_led_output
+  - platform: binary
+    name: "Green LED"
+    id: green_led
+    output: green_led_output
+  - platform: binary
+    name: "Yellow LED"
+    id: yellow_led
+    output: yellow_led_output
+  - platform: binary
+    name: "Red LED"
+    id: red_led
+    output: red_led_output
+# TM1637 Display Configuration
+display:
+  - platform: tm1637
+    clk_pin: GPIO18
+    dio_pin: GPIO17
+    id: tm1637_display
+    lambda: |-
+      if (id(room_temperature).has_state()) {
+        it.printf(0, "%.1fC", id(room_temperature).state);
+      } else {
+        it.print("----");
+      }
